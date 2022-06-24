@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vehicule{% endblock %}
+
+{% block body %}
+<main class="container-fluid">
+    <article class="container">
+        <h1 class="text-center mb-4 fw-semibold fs-2">Vehicule</h1>
+
+        <table class="table table-sm">
+
+            <tbody>
+                <tr>
+                    <th>#</th>
+                    <td>{{ vehicule.id }}</td>
+                </tr>
+                <tr>
+                    <th>Titre</th>
+                    <td>{{ vehicule.titre }}</td>
+                </tr>
+                <tr>
+                    <th>Marque</th>
+                    <td>{{ vehicule.marque }}</td>
+                </tr>
+                <tr>
+                    <th>Modèle</th>
+                    <td>{{ vehicule.modele }}</td>
+                </tr>
+                <tr>
+                    <th>Description</th>
+                    <td>{{ vehicule.description ? vehicule.description : "-" }}</td>
+                </tr>
+                <tr>
+                    <th>Emplacement Photo</th>
+                    {% if vehicule.photo %}
+                        <td>{{ asset("upload/" ~ vehicule.photo) }}</td>
+                    {% else %}
+                        <td>-</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Prix/Jour</th>
+                    <td>{{ vehicule.prixJournalier|deviseFr }}</td>
+                </tr>
+                <tr>
+                    <th>Date Ajout</th>
+                    <td>{{ vehicule.dateEnregistrement ? vehicule.dateEnregistrement|date('d/m/Y H:i') : '' }}</td>
+                </tr>
+            </tbody>
+
+        </table>
+        <a href="{{ path('vehicule_index') }}" class="btn btn-outline-primary btn-sm float-end me-3">Retour</a>
+        <a href="{{ path('vehicule_edit', {'id': vehicule.id}) }}" class="btn btn-outline-primary btn-sm float-end mx-1">Modifier</a>
+        {{ include('vehicule/_delete_form.html.twig') }}
+    </article>
+</main>
+{% endblock %}

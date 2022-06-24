@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer Vehicule{% endblock %}
+
+{% block body %}
+<main class="container-fluid">
+    <article class="container">
+        <h1 class="text-center mb-4 fw-semibold fs-2">Créer Vehicule</h1>
+        {{ include('vehicule/_form.html.twig') }}
+        <a href="{{ path('vehicule_index') }}" class="btn btn-outline-primary btn-sm float-end mx-3">Retour</a>
+    </article>
+</main>
+{% endblock %}

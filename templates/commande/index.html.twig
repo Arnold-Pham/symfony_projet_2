@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande index{% endblock %}
+
+{% block body %}
+<main class="container-fluid">
+    <h1 class="text-center mb-4 fw-semibold fs-2">Liste Commandes</h1>
+
+    <div class="overflow-scroll">
+        <table class="table table-sm table-hover px-5">
+
+            <thead>
+                <tr class="table-primary text-center align-middle">
+                    <th scope="col">#</th>
+                    <th scope="col">Membre</th>
+                    <th scope="col">Vehicule</th>
+                    <th scope="col">Début</th>
+                    <th scope="col">Fin</th>
+                    <th scope="col">Prix Total</th>
+                    <th scope="col">Date Enregistrement</th>
+                    <th scope="col">Options</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for commande in commandes %}
+                <tr class="text-center align-middle">
+                    <td>{{ commande.id }}</td>
+
+                    {% if commande.membre.id is defined %}
+                    <td>
+                        <a href="{{ path('membre_show', {'id': commande.membre.id}) }}" class="btn btn-sm btn-outline-primary" title="{{ commande.membre.pseudo ~ ' - ' ~ commande.membre.email }}">{{ commande.membre.id }}</a>
+                    </td>
+                    {% else %}
+                    <td><i class="bi bi-x fs-5"></i></td>
+                    {% endif %}
+
+                    {% if commande.vehicule.id is defined %}
+                    <td>
+                        <a href="{{ path('vehicule_show', {'id': commande.vehicule.id}) }}" class="btn btn-sm btn-outline-primary" title="{{ commande.vehicule.titre ~ ': ' ~ commande.vehicule.marque ~ ' - ' ~ commande.vehicule.modele }}">{{ commande.vehicule.id }}</a>
+                    </td>
+                    {% else %}
+                    <td><i class="bi bi-x fs-5"></i></td>
+                    {% endif %}
+
+                    <td>{{ commande.dateHeureDepart ? commande.dateHeureDepart|date('d/m/Y H:i') : '' }}</td>
+                    <td>{{ commande.dateHeureFin ? commande.dateHeureFin|date('d/m/Y H:i') : '' }}</td>
+                    <td>{{ commande.prixTotal|deviseFr }}</td>
+                    <td>{{ commande.dateEnregistrement ? commande.dateEnregistrement|date('d/m/Y H:i') : '' }}</td>
+                    <td>
+                        {% include 'commun/action.html.twig' with {'id': commande.id, 'show': 'commande_show', 'edit': 'commande_edit', 'delete': 'commande_delete'} %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr class="text-center align-middle">
+                    <td colspan="8">Aucune Commande</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            
+        </table>
+    </div>
+
+    <a href="{{ path('commande_new') }}" class="btn btn-outline-primary btn-sm float-end mx-3">Ajouter</a>
+</main>
+{% endblock %}

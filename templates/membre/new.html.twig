@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer Membre{% endblock %}
+
+{% block body %}
+<main class="container-fluid">
+    <article class="container">
+        <h1 class="text-center mb-4 fw-semibold fs-2">Créer Membre</h1>
+        {{ include('membre/_form.html.twig') }}
+        <a href="{{ path('membre_index') }}" class="btn btn-outline-primary btn-sm float-end mx-3">Retour</a>
+    </article>
+</main>
+{% endblock %}

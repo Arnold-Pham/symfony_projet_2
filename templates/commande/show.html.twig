@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande{% endblock %}
+
+{% block body %}
+<main class="container-fluid">
+    <article class="container">
+        <h1 class="text-center mb-4 fw-semibold fs-2">Commande</h1>
+
+        <table class="table table-sm">
+
+            <tbody>
+                <tr>
+                    <th>#</th>
+                    <td>{{ commande.id }}</td>
+                </tr>
+                <tr>
+                    <th>ID Membre</th>
+                    {% if commande.membre.id is defined %}
+                    <td>{{ commande.membre.id }}</td>
+                    {% else %}
+                    <td>X</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>ID Vehicule</th>
+                    {% if commande.vehicule.id is defined %}
+                    <td>{{ commande.vehicule.id }}</td>
+                    {% else %}
+                    <td>X</td>
+                    {% endif %}
+                </tr>
+                <tr>
+                    <th>Date Début</th>
+                    <td>{{ commande.dateHeureDepart ? commande.dateHeureDepart|date('d/m/Y') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Date Fin</th>
+                    <td>{{ commande.dateHeureFin ? commande.dateHeureFin|date('d/m/Y') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Prix Total</th>
+                    <td>{{ commande.prixTotal|deviseFr }}</td>
+                </tr>
+                <tr>
+                    <th>Date Commande</th>
+                    <td>{{ commande.dateEnregistrement ? commande.dateEnregistrement|date('d/m/Y H:i:s') : '' }}</td>
+                </tr>
+            </tbody>
+
+        </table>
+        <a href="{{ path('commande_index') }}" class="btn btn-outline-primary btn-sm float-end me-3">Retour</a>
+        <a href="{{ path('commande_edit', {'id': commande.id}) }}" class="btn btn-outline-primary btn-sm float-end mx-1">Modifier</a>
+        {{ include('commande/_delete_form.html.twig') }}
+    </article>
+</main>
+{% endblock %}

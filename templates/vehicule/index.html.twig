@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vehicule index{% endblock %}
+
+{% block body %}
+<main class="container-fluid">
+    <h1 class="text-center mb-4 fw-semibold fs-2">Liste Vehicules</h1>
+
+    <div class="overflow-scroll">
+        <table class="table table-sm table-hover px-5">
+
+            <thead>
+                <tr class="table-primary text-center align-middle">
+                    <th style="width: 5%" scope="col">#</th>
+                    <th style="width:10%" scope="col">Titre</th>
+                    <th style="width:10%" scope="col">Marque</th>
+                    <th style="width:10%" scope="col">Modele</th>
+                    <th style="width:40%" scope="col">Description</th>
+                    <th style="width:10%" scope="col">Photo</th>
+                    <th style="width:10%" scope="col">Prix/jour</th>
+                    <th style="width: 5%" scope="col">Options</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for vehicule in vehicules %}
+                <tr class="text-center align-middle">
+                    <td>{{ vehicule.id }}</td>
+                    <td>{{ vehicule.titre }}</td>
+                    <td>{{ vehicule.marque }}</td>
+                    <td>{{ vehicule.modele }}</td>
+                    <td>{{ vehicule.description ? vehicule.description : "-" }}</td>
+                    <td>
+                    {% if vehicule.photo %}
+                        <img src="/upload{{ asset(vehicule.photo) }}" alt="Photo de la voiture" class="img-fluid img-thumbnail border-dark">
+                    {% else %}
+                        -
+                    {% endif %}
+                    </td>
+                    <td>{{ vehicule.prixJournalier|deviseFr }}</td>
+                    <td>
+                        {% include 'commun/action.html.twig' with {'id': vehicule.id, 'show': 'vehicule_show', 'edit': 'vehicule_edit', 'delete': 'vehicule_delete'} %}
+                    </td>
+                </tr>
+                {% else %}
+                    <tr class="text-center align-middle">
+                        <td colspan="8">Aucun Véhicule</td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+    </div>
+    
+    <a href="{{ path('vehicule_new') }}" class="btn btn-outline-primary btn-sm float-end mx-3">Ajouter</a>
+</main>
+{% endblock %}

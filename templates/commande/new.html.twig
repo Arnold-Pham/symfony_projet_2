@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation{% endblock %}
+
+{% block body %}
+<main class="container-fluid">
+    {% if vehicule is defined %}
+    <article class="container mb-3">
+        <div class="d-flex justify-content-center">
+            {% if vehicule.photo %}
+            <img src="/upload{{ asset(vehicule.photo) }}" alt="" class="img-fluid img-thumbnail" style="height: 200px;">
+            {% endif %}
+            <div class="p-3">
+                <h5>{{ vehicule.titre }}</h5>
+                <hr>
+                <p>{{ vehicule.marque ~ " - " ~ vehicule.modele }}</p>
+                <p>{{ vehicule.description }}</p>
+                <p>{{ vehicule.prixJournalier|number_format(2, ",", " ") ~ " €/jour" }}</p>
+            </div>
+        </div>
+    </article>
+    {% endif %}
+    <article class="container">
+        <h1 class="text-center mb-4 fw-semibold fs-2">Réserver un vehicule</h1>
+            {% for message in app.flashes("message") %}
+            <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
+            {% for vehicule in app.flashes("vehicules") %}
+            <div class="alert alert-info">
+                <div>liste des véhicules disponibles sur le créneau demandé</div>
+                <ul>
+                    {% for v in vehicule.disponibles %}
+                    <li>{{ v.titre }}</li>
+                    {% else %}
+                    <li>Aucun véhicule en stocke pour répondre à votre demande</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        {{ include('commande/_form.html.twig') }}
+        <a href="{{ path('home') }}" class="btn btn-outline-primary btn-sm float-end mx-3">Retour</a>
+        <article class="container"></article>
+    </article>
+</main>
+{% endblock %}
