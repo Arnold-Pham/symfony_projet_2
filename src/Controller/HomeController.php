@@ -26,25 +26,23 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(): Response
     {
-        $vehicules = $this->em->getRepository(Vehicule::class)->findAll();
-
-        return $this->render('home/index.html.twig', compact('vehicules'));
+        return $this->render('home/index.html.twig');
     }
 
 
 
     //§ =============================== BARRE DE RECHERCHE (Search) ===============================
-    //! ------------------------------------- [ Fonctionnel ] -------------------------------------
+    //? ------------------------------------- [ Fonctionnel ] -------------------------------------
 
     #[Route('/search', name: 'home_search')]
     public function search(Request $request): Response
     {
-        $debut = $request->request->get('recherche-debut');
-        $fin = $request->request->get('recherche-fin');
-        $listeVehiculeLoue = $this->em->getRepository(Commande::class)->listeVehiculeLoue($debut, $fin);
-        $vehicules = $this->em->getRepository(Vehicule::class)->findByVehiculeDisponibles($listeVehiculeLoue);
+        $debut = $request->request->get('recherche_debut');
+        $fin = $request->request->get('recherche_fin');
+        $indispo = $this->em->getRepository(Commande::class)->listeVehiculeLoue($debut, $fin);
+        $vehicules = $this->em->getRepository(Vehicule::class)->findByVehiculeDisponibles($indispo);
         dump($vehicules);
 
-        return $this->render('home/index.html.twig', compact('vehicules'));
+        return $this->render('home/results.html.twig', compact('vehicules'));
     }
 }

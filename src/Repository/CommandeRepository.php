@@ -36,18 +36,19 @@ class CommandeRepository extends ServiceEntityRepository
     {
         $resultat = [];
         $vehiculeReservee =  $this->createQueryBuilder('c')
-            ->select("v.id AS idVehicule")
-            ->leftjoin("c.vehicule", "v")
+            ->select('v.id AS idVehicule')
+            ->leftjoin('c.vehicule', 'v')
             ->orWhere('c.date_heure_depart BETWEEN :dtDebut AND :dtFIN')
             ->orWhere('c.date_heure_fin BETWEEN :dtDebut AND :dtFIN')
             ->orWhere('c.date_heure_depart <= :dtDebut AND c.date_heure_fin >= :dtFIN')
+            ->orWhere('c.date_heure_depart >= :dtDebut AND c.date_heure_fin <= :dtFIN')
             ->setParameter('dtDebut', $dtDebutResa)
             ->setParameter('dtFIN', $dtFinResa)
             ->getQuery()
             ->getResult();
 
         foreach ($vehiculeReservee as $vehicule) {
-            $resultat[] = $vehicule["idVehicule"];
+            $resultat[] = $vehicule['idVehicule'];
         }
 
         return  $resultat;
@@ -57,11 +58,10 @@ class CommandeRepository extends ServiceEntityRepository
     {
         $reserves = $this->listeVehiculeLoue($dtDebutResa, $dtFinResa);
         $qb = $this->getEntityManager()->createQueryBuilder();
-        
+
         return $this->createQueryBuilder('c')
-            ->leftjoin("c.vehicule", "v")
-            ->select("v.id")
-            ->join("c.vehicule", "v")
+            ->select('v.id')
+            ->join('c.vehicule', 'v')
             ->where($qb->expr()->notIn('v.id', $reserves))
             ->getQuery()
             ->getResult();
